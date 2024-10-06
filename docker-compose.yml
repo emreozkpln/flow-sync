@@ -1,0 +1,30 @@
+version: '3.3'
+
+services:
+  spring-boot-app:
+    image: myFlowSync:clear
+    ports:
+      - "8082:8080"
+      - "1883:1884"
+      - "1884:1884"
+    restart: always
+    volumes:
+      - logs:/logs
+    depends_on:
+      - postgresqldb
+
+  postgresqldb:
+    image: postgres:latest
+    hostname: postgresqldb
+    restart: always
+    environment:
+      - "POSTGRES_PASSWORD=12345"
+      - "POSTGRES_USER=postgres"
+      - "POSTGRES_DB=flow-sync"
+    volumes:
+      - postgresqldb_data:/var/lib/postgresql/data
+
+volumes:
+  postgresqldb_data:
+  logs:
+
